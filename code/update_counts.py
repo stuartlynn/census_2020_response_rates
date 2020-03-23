@@ -3,6 +3,7 @@ import pandas as pd
 import geopandas as gp 
 import numpy as np
 from pathlib import Path
+from urllib.request import urlretrieve
 import subprocess
 
 
@@ -64,6 +65,10 @@ if __name__ == "__main__":
 
     print("Combining with previous days data")
     combine_all(rawdir, outdir)
+
+
+    print("Grabbing all states data")
+    urlretrieve('https://www2.census.gov/programs-surveys/decennial/2020/data/2020map/2020/decennialrr2020.csv',  outdir / f'all_states/{res_date}.csv')
 
     print("Updating the git repo")
     update_git(res_date)
