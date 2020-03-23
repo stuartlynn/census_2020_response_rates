@@ -6,7 +6,6 @@ from pathlib import Path
 import subprocess
 
 
-
 def fetch_daily_counts(variables):
     url = 'https://api.census.gov/data/2020/dec/responserate?get={cvars}&for=tract:*&in=state:36&in=county:*'.format(cvars=','.join(variables + ['GEO_ID','RESP_DATE']))
     response_rate = requests.get(url).json()
@@ -56,10 +55,17 @@ if __name__ == "__main__":
         'DRRINT',
     ] 
 
+    print("Grabbing todays data")
     data = fetch_daily_counts(variables)
     res_date = data.RESP_DATE.unique()[0]
+    
+    print("Saving todays data")
     data.to_csv(rawdir / f"{res_date}.csv",index=False)
+
+    print("Combining with previous days data")
     combine_all(rawdir, outdir)
+
+    print("Updating the git repo")
     update_git(res_date)
 
 
