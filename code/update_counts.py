@@ -3,6 +3,8 @@ import os
 print(os.path.dirname(os.path.realpath(__file__))+'/.env')
 load_dotenv(os.path.dirname(os.path.realpath(__file__))+'/.env')
 
+from make_daily_2002_tract_geojson import assign_counts 
+
 import requests 
 import pandas as pd 
 import geopandas as gp 
@@ -93,6 +95,10 @@ if __name__ == "__main__":
     print("Grabbing all states data")
     (outdir / 'all_states').mkdir(exist_ok=True)
     urlretrieve('https://www2.census.gov/programs-surveys/decennial/2020/data/2020map/2020/decennialrr2020.csv',  outdir / f'all_states/{res_date}.csv')
+
+
+    print('Updating geojson with counts')
+    assign_counts()
 
     print("Updating the git repo")
     update_git(res_date)
