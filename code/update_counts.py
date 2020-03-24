@@ -1,3 +1,8 @@
+from dotenv import load_dotenv
+import os
+print(os.path.dirname(os.path.realpath(__file__))+'/.env')
+load_dotenv(os.path.dirname(os.path.realpath(__file__))+'/.env')
+
 import requests 
 import pandas as pd 
 import geopandas as gp 
@@ -6,15 +11,26 @@ from pathlib import Path
 from urllib.request import urlretrieve
 import subprocess
 
+KEY = os.getenv('APIKEY')
+print("KEY ",KEY)
 
-def fetch_daily_counts(variables):
-    url = 'https://api.census.gov/data/2020/dec/responserate?get={cvars}&for=tract:*&in=state:36&in=county:*'.format(cvars=','.join(variables + ['GEO_ID','RESP_DATE']))
-    response_rate = requests.get(url).json()
-    headers = response_rate[0]
-    data = pd.DataFrame(response_rate[1:], columns= headers)
-    data = data.astype(dtype=dict(zip(variables, [np.float64]*len(variables))))
-    return data
+def fetch_daily_counts(variables,state):
+    stateNo = f"0{state}" if state < 10 else  f"{state}"
+    url = 'https://api.census.gov/data/2020/dec/responserate?get={cvars}&for=tract:*&in=state:{state}&in=county:*&key={key}'.format(cvars=','.join(variables + ['GEO_ID','RESP_DATE']), state=stateNo, key=KEY)
+    try:
+        response_rate = requests.get(url).json()
+        headers = response_rate[0]
+        data = pd.DataFrame(response_rate[1:], columns= headers)
+        data = data.astype(dtype=dict(zip(variables, [np.float64]*len(variables))))
+        return data
+    except: 
+        raise Exception('Failed to download')
 
+def combine_all_states(directory,outfile):
+    all_data = pd.DataFrame()
+    for f in directory.glob('*.csv'):
+        all_data= all_data.append(pd.read_csv(f))
+    all_data.to_csv(outfile,index=False)
 
 def combine_all(directory,out_dir):
     all_data = pd.DataFrame()
@@ -57,17 +73,25 @@ if __name__ == "__main__":
     ] 
 
     print("Grabbing todays data")
-    data = fetch_daily_counts(variables)
-    res_date = data.RESP_DATE.unique()[0]
-    
-    print("Saving todays data")
-    data.to_csv(rawdir / f"{res_date}.csv",index=False)
+
+    for state in range(1,57):
+        try:
+            data = fetch_daily_counts(variables,state)
+            res_date = data.RESP_DATE.unique()[0]
+            outdir = (rawdir / res_date)
+            outdir.mkdir(exist_ok = True)
+
+            print("Saving todays data")
+            data.to_csv( outdir /  f"{state}.csv",index=False)
+        except:
+            print('Issue with state ', state)
 
     print("Combining with previous days data")
-    combine_all(rawdir, outdir)
+    combine_all_states(outdir, rawdir / f"{res_date}.csv")
 
 
     print("Grabbing all states data")
+    (outdir / 'all_states').mkdir(exist_ok=True)
     urlretrieve('https://www2.census.gov/programs-surveys/decennial/2020/data/2020map/2020/decennialrr2020.csv',  outdir / f'all_states/{res_date}.csv')
 
     print("Updating the git repo")
