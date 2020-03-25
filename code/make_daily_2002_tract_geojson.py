@@ -4,7 +4,7 @@ from pathlib import Path
 
 DATA_DIR = Path('../data/')
 STATE_DATA_DIR = DATA_DIR / 'raw'
-GEO_DIR = DATA_DIR / 'geo'
+GEO_DIR = DATA_DIR / 'geo' / '2020_geometries'
 
 def load_daily_count_data():
     all_data = pd.DataFrame()

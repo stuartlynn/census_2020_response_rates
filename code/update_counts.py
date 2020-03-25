@@ -1,9 +1,12 @@
 from dotenv import load_dotenv
 import os
-print(os.path.dirname(os.path.realpath(__file__))+'/.env')
-load_dotenv(os.path.dirname(os.path.realpath(__file__))+'/.env')
+
+ROOT_PATH = os.path.dirname(os.path.realpath(__file__))
+print(ROOT_PATH + '/.env')
+load_dotenv(ROOT_PATH+'/.env')
 
 from make_daily_2002_tract_geojson import assign_counts 
+from translate_to_2010_tracts import translate_counts_to_2010
 
 import requests 
 import pandas as pd 
@@ -12,6 +15,7 @@ import numpy as np
 from pathlib import Path
 from urllib.request import urlretrieve
 import subprocess
+
 
 KEY = os.getenv('APIKEY')
 print("KEY ",KEY)
@@ -48,7 +52,7 @@ def update_git(last_update):
 
 
 if __name__ == "__main__":
-    outdir = Path('../data/')
+    outdir = Path(ROOT_PATH + '/../data/')
     outdir.mkdir(exist_ok=True)
     rawdir = outdir / 'raw'
 
@@ -99,6 +103,10 @@ if __name__ == "__main__":
 
     print('Updating geojson with counts')
     assign_counts()
+
+    print('Translating counts to 2010')
+    translate_counts_to_2010()
+
 
     print("Updating the git repo")
     update_git(res_date)
