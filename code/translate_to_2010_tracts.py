@@ -13,7 +13,7 @@ def translate_counts_to_2010():
     data_path = Path(ROOT_PATH+ '/../data/raw')
     for f in data_path.glob("*.csv"):
         print('translating ', f, ' to census tracts')
-        rates = pd.read_csv(f)
+        rates = pd.read_csv(f).drop_duplicates(subset='GEO_ID')
 
         merged = (pd.merge(
             relationship, 
