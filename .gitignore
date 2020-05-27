@@ -1,6 +1,2 @@
-data/geo/*.shp
-data/geo/*.dbf
-data/geo/*.shx
-data/geo/*.prj
-data/geo/*.cpg
+data/geo/2020_geometries
 data/geo/sr20_detailed.zip
