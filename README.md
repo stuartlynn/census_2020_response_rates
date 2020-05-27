@@ -14,7 +14,7 @@ The data here is primarily being collected to power the [Hester Street census ma
 
 - [/data/raw](https://github.com/stuartlynn/census_2020_response_rates/tree/master/data/raw) : Contains the raw data pulled from the API. There is a combined CSV for each day and a folder that contains a file for each state. 
 - [data/counts_adjusted_for_2010](https://github.com/stuartlynn/census_2020_response_rates/tree/master/data/counts_adjusted_for_2010) Contains a csv for each day with the 2020 self response counts mapped to the 2010 census tract geometries. For more information on how this is done have a look at the [translate_to_2010_tracts.py](https://github.com/stuartlynn/census_2020_response_rates/blob/master/code/translate_to_2010_tracts.py) script.  
-- [/data/geo/2020_tracts_with_counts](https://github.com/stuartlynn/census_2020_response_rates/tree/master/data/geo/2020_tracts_with_counts) Contains a GeoJSON file per state containing each tract and it's most recent response rate.
+- [/data/geo/2020_tracts_with_counts](https://github.com/stuartlynn/census_2020_response_rates/tree/master/data/geo/2020_tracts_with_counts) Contains a GeoJSON file per state containing each tract and its most recent response rate.
 
 ### Variables 
 
