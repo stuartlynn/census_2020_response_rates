@@ -49,6 +49,7 @@ def update_git(last_update):
     subprocess.run(['git','add', '../data/'])
     subprocess.run(['git','commit', '-m',f'"adding data for {last_update}"'])
     subprocess.run(['git','push'])
+    subprocess.run(['git','push','tsdataclinic','master:master'])
 
 
 if __name__ == "__main__":
