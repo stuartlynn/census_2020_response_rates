@@ -41,7 +41,7 @@ Jinja2==2.10.3
 jsonschema==3.2.0
 lensfun==0.3.2
 louis==3.12.0
-lxml==4.4.2
+lxml==4.6.2
 Mako==1.1.0
 mallard-ducktype==1.0.2
 Markdown==3.1.1
