@@ -102,7 +102,7 @@ texttable==1.6.2
 Twisted>=20.3.0
 ueberzug==18.1.5
 ufw==0.36
-urllib3==1.25.7
+urllib3==1.25.8
 websocket-client==0.57.0
 Werkzeug==0.16.0
 zipp==0.6.0
