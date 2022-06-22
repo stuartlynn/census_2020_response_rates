@@ -49,7 +49,7 @@ MarkupSafe==1.1.1
 more-itertools==8.1.0
 munch==2.5.0
 npyscreen==4.10.5
-numpy==1.18.1
+numpy==1.22.0
 ordered-set==3.1.1
 packaging==20.0
 pacman-mirrors==4.16.2
